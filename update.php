@@ -1,28 +1,22 @@
 <?php
+include 'koneksi.php';
 
-include '../koneksi/koneksi.php';
 
-if(isset($_POST['id'])){
+if (isset($_POST['id_barang'])) {
+    $id    = $_POST['id_barang'];
+    $nama  = $_POST['nama_barang'];
+    $harga = $_POST['harga_jual'];
+    $stok  = $_POST['stok'];
 
-$id = $_POST['id'];
-$nama = $_POST['nama_barang'];
-$harga = $_POST['harga'];
-$stok = $_POST['stok'];
-$kategori = $_POST['kategori'];
+    
+    $query = mysqli_query($conn, "UPDATE barang SET nama_barang='$nama', harga_jual='$harga', stok='$stok' WHERE id_barang='$id'");
 
-mysqli_query($conn, "UPDATE barang SET
-
-nama_barang='$nama',
-harga='$harga',
-stok='$stok',
-kategori='$kategori'
-
-WHERE id_barang='$id'
-
-");
-
-header("location:index.php");
-
+    if($query) {
+        header("location: index.php");
+    } else {
+        echo "Gagal mengupdate data: " . mysqli_error($conn);
+    }
+} else {
+    header("location: index.php");
 }
-
 ?>

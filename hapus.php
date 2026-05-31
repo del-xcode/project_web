@@ -1,11 +1,18 @@
 <?php
+include 'koneksi.php';
 
-include '../koneksi/koneksi.php';
 
-$id = $_GET['id'];
+if (isset($_GET['id'])) {
+    $id = $_GET['id'];
 
-mysqli_query($conn, "DELETE FROM barang WHERE id_barang='$id'");
+    $query = mysqli_query($conn, "DELETE FROM barang WHERE id_barang='$id'");
 
-header("location:index.php");
-
+    if($query) {
+        header("location: index.php");
+    } else {
+        echo "Gagal menghapus data: " . mysqli_error($conn);
+    }
+} else {
+    header("location: index.php");
+}
 ?>

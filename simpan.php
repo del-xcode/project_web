@@ -1,22 +1,21 @@
 <?php
+include 'koneksi.php';
 
-include '../koneksi/koneksi.php';
 
-if(isset($_POST['nama_barang'])){
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $nama  = $_POST['nama_barang'];
+    $harga = $_POST['harga']; 
+    $stok  = $_POST['stok'];
 
-$nama = $_POST['nama_barang'];
-$harga = $_POST['harga'];
-$stok = $_POST['stok'];
-$kategori = $_POST['kategori'];
+    
+    $query = mysqli_query($conn, "INSERT INTO barang (nama_barang, harga_jual, stok) VALUES ('$nama', '$harga', '$stok')");
 
-mysqli_query($conn, "INSERT INTO barang VALUES(
-    '',
-    '$nama',
-    '$harga',
-    '$stok',
-    '$kategori'
-)");
-
-header("location:index.php");
+    if($query) {
+        header("location: index.php");
+    } else {
+        echo "Gagal menambahkan data: " . mysqli_error($conn);
+    }
+} else {
+    header("location: index.php");
 }
 ?>
