@@ -1,9 +1,6 @@
 <?php
-// Menghubungkan ke database
 include 'koneksi.php';
 
-// Di sini nantinya kamu bisa mengambil data riil dari database, 
-// sementara kita gunakan data dummy untuk tampilan dashboard.
 $total_transaksi = 120;
 $total_pendapatan = 3500000;
 $produk_terjual = 450;
@@ -32,26 +29,26 @@ $produk_terjual = 450;
 <div class="container-fluid">
     <div class="row">
         <!-- SIDEBAR NAVIGATION -->
-        <div class="col-md-3 col-lg-2 sidebar p-3 d-flex flex-column">
-            <h4 class="text-center mb-4"><i class="fa-solid fa-cash-register me-2"></i>KasirApp</h4>
-            <hr>
-            <ul class="nav nav-pills flex-column mb-auto">
-                <li class="nav-item mb-2">
-                    <a href="#" class="nav-link active bg-primary"><i class="fa-solid fa-gauge me-2"></i> Dashboard</a>
-                </li>
-                <li class="mb-2">
-                    <a href="#" class="nav-link p-2 rounded"><i class="fa-solid fa-cart-shopping me-2"></i> Transaksi Baru</a>
-                </li>
-                <li class="mb-2">
-                    <a href="#" class="nav-link p-2 rounded"><i class="fa-solid fa-box me-2"></i> Stok Produk</a>
-                </li>
-                <li class="mb-2">
-                    <a href="#" class="nav-link p-2 rounded"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Laporan Penjualan</a>
-                </li>
-            </ul>
-            <hr>
-            <a href="#" class="text-danger p-2"><i class="fa-solid fa-right-from-bracket me-2"></i> Keluar</a>
-        </div>
+       <div class="col-md-3 col-lg-2 sidebar p-3 d-flex flex-column">
+    <h4 class="text-center mb-4"><i class="fa-solid fa-cash-register me-2"></i>KasirApp</h4>
+    <hr>
+    <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item mb-2">
+            <a href="dashboard.php" class="nav-link active bg-primary"><i class="fa-solid fa-gauge me-2"></i> Dashboard</a>
+        </li>
+        <li class="mb-2">
+            <a href="transaksi.php" class="nav-link p-2 rounded"><i class="fa-solid fa-cart-shopping me-2"></i> Transaksi Baru</a>
+        </li>
+        <li class="mb-2">
+            <a href="index.php" class="nav-link p-2 rounded"><i class="fa-solid fa-box me-2"></i> Stok Produk</a>
+        </li>
+        <li class="mb-2">
+            <a href="laporan.php" class="nav-link p-2 rounded"><i class="fa-solid fa-file-invoice-dollar me-2"></i> Laporan Penjualan</a>
+        </li>
+    </ul>
+    <hr>
+    <a href="logout.php" class="text-danger p-2"><i class="fa-solid fa-right-from-bracket me-2"></i> Keluar</a>
+</div>
 
         <!-- MAIN CONTENT -->
         <div class="col-md-9 col-lg-10 p-4">
@@ -122,7 +119,33 @@ $produk_terjual = 450;
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody> 
+                                  <tbody>
+    <?php
+    // 1. Ambil 5 transaksi terbaru dari database tabel penjualan
+    $no = 1;
+    $query_trx = mysqli_query($conn, "SELECT * FROM penjualan ORDER BY id_penjualan DESC LIMIT 5");
+    
+    // 2. Lakukan perulangan data
+    while($d = mysqli_fetch_array($query_trx)) {
+    ?>
+    <tr>
+        <td><?= $no++; ?></td>
+        <td><span class="text-primary fw-bold">#<?= $d['id_penjualan']; ?></span></td>
+        <td><?= isset($d['tanggal']) ? $d['tanggal'] : '-'; ?></td>
+        <td>Rp <?= number_format($d['total_harga'], 0, ',', '.'); ?></td>
+        <td><span class="badge bg-success">Selesai</span></td>
+        <td>
+            <a href="detail_transaksi.php?id=<?= $d['id_penjualan']; ?>" class="btn btn-outline-primary btn-sm fw-bold">
+                <i class="fa-solid fa-eye me-1"></i> Detail
+            </a>
+        </td>
+    </tr>
+    <?php } ?>
+</tbody>
+                               
+   
+   
                                 <!-- Contoh baris data statis -->
                                 <tr>
                                     <td>1</td>
